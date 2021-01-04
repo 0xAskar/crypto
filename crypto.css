@@ -1,0 +1,34 @@
+.crypto .crypto_label {
+  font-size: 125%;
+  text-align: left;
+  display: inline-block;
+}
+
+.crypto .btc_label {
+  font-size: 100%;
+  text-align: left;
+}
+
+.crypto .eth_label {
+  font-size: 100%;
+  text-align: left;
+}
+
+.crypto .btc_price {
+  font-size: 100%;
+  text-align: left;
+}
+
+.crypto .eth_price {
+  font-size: 100%;
+  text-align: left;
+}
+
+
+.crypto tr.colored .crypto_label {
+  color: #FF0000;
+}
+
+.crypto tr.colored .btc_price {
+  color: #ffffff;
+}
