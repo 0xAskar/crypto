@@ -1,16 +1,18 @@
 Module.register("crypto", {
   defaults: {
-    coins: [config.coin, config.coin2],
+    coins: [config.coin, config.coin2, config.coin3],
     coin_name: config.coin,
     coin_name2: config.coin2,
+    coin_name3: config.coin3,
     initialLoadDelay: 10000,
     updateInterval: 1000 * 5 // every 30 seconds
   },
   price: 0,
   price2: 0,
-  prices: [this.price, this.price2],
+  price3: 0,
+  prices: [this.price, this.price2, this.price3],
   counter: 0,
-  num_coins: 2,
+  num_coins: 3,
 
   // Define required scripts.
 	getStyles: function () {
@@ -55,41 +57,27 @@ Module.register("crypto", {
     // create label element and add it to the row
     var btc_label = document.createElement("td");
     btc_label.className = 'btc_label';
-    btc_label.innerText = this.config.coin + "'s price:";
+    btc_label.innerText = this.config.coin + ": $" + this.price.toLocaleString();
     btc_label_row.appendChild(btc_label);
     table.appendChild(btc_label_row);
-
-    // create row for btc price and insert it into table
-    var btc_row = document.createElement("tr");
-    // create price element and add it to the row after updating$
-    var btc_price = document.createElement("td");
-    // this.updatePrice(this.initialLoadDelay);
-    btc_price.className = "btc_price";
-    // label.innerText = "$" + String(this.price);
-    btc_price.innerText = "$" + this.price.toLocaleString();
-    btc_row.appendChild(btc_price);
-    table.appendChild(btc_row);
 
     // create row for eth label and insert it into table
     var eth_label_row = document.createElement("tr");
     // create label element and add it to the row
     var eth_label = document.createElement("td");
     eth_label.className = 'eth_label';
-    eth_label.innerText = this.config.coin2 + "'s price:";
+    eth_label.innerText = this.config.coin2 + ": $" + this.price2.toLocaleString();
     eth_label_row.appendChild(eth_label);
     table.appendChild(eth_label_row);
 
-
-    // create row for eth price and insert it into table
-    var eth_row = document.createElement("tr");
-    // create price element and add it to the row after updating$
-    var eth_price = document.createElement("td");
-    // this.updatePrice(this.initialLoadDelay);
-    eth_price.className = "align-left";
-    // label.innerText = "$" + String(this.price);
-    eth_price.innerText = "$" + this.price2.toLocaleString();
-    eth_row.appendChild(eth_price);
-    table.appendChild(eth_row);
+    // create row for eth label and insert it into table
+    var link_label_row = document.createElement("tr");
+    // create label element and add it to the row
+    var link_label = document.createElement("td");
+    link_label.className = 'link_label';
+    link_label.innerText = this.config.coin3 + ": $" + this.price3.toLocaleString();
+    link_label_row.appendChild(link_label);
+    table.appendChild(link_label_row);
 
     // add the table to wrapper
     wrapper.appendChild(table);
@@ -104,6 +92,7 @@ Module.register("crypto", {
     // for bitcoin and then for ethereum
     self.fetcher(self, 1);
     self.fetcher(self, 2);
+    self.fetcher(self, 3);
   },
 
   fetcher: (self, num) => {
@@ -111,8 +100,11 @@ Module.register("crypto", {
     if (num == 1) {
       link = 'https://api.coingecko.com/api/v3/coins/'+ self.config.coin.toLowerCase();
     }
-    else {
+    else if (num == 2) {
       link = 'https://api.coingecko.com/api/v3/coins/'+ self.config.coin2.toLowerCase()
+    }
+    else {
+      link = 'https://api.coingecko.com/api/v3/coins/'+ self.config.coin3.toLowerCase()
     }
     fetch(link)
       .then(
@@ -127,8 +119,11 @@ Module.register("crypto", {
             if (num == 1) {
               self.price = data.market_data.current_price.usd;
             }
-            else {
+            else if (num == 2) {
               self.price2 = data.market_data.current_price.usd;
+            }
+            else {
+              self.price3 = data.market_data.current_price.usd;
             }
             self.updateDom(0);
           });
